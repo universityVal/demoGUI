@@ -42,22 +42,9 @@
 </#list>
 
 </table>
-<div>
 
-    <br>
-    <br>
-    <fieldset>
-        <legend>Add student</legend>
-        <form name="student" action="" method="POST">
-            <label>Name:</label>
-            <input type="text">
-            <br>
-            <label>Mark:</label>
-            <input type="text">
-            <br>
-            <input type="submit" value="Create"/>
-        </form>
-    </fieldset>
+<div>
+    <a href="students/add" >Add new word</a>
 </div>
 
 </body>

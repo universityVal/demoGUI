@@ -3,6 +3,7 @@ package gui.example.demo;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -10,10 +11,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Controller
 public class ControllerHello {
+    String name;
+    Exception exception;
+    Logger logger = Logger.getLogger(ControllerHello.class.getName());
 
     List<Student> students= new ArrayList<>(
             Arrays.asList(
@@ -44,6 +50,27 @@ public class ControllerHello {
                 = students.stream().filter(student -> student.getId() != id)
                 .collect(Collectors.toList());
         students = listOfStudentsAfterDeletion;
+
+        model.addAttribute("students", students);
+        return "students";
+    }
+
+    @RequestMapping(value = "/students/add",method = RequestMethod.GET)
+        public String addStudent(Model model)
+    {
+        StudentForm studentForm = new StudentForm();
+        model.addAttribute("studentForm", studentForm);
+        return "add";
+    }
+
+    @RequestMapping(value = "/students/add", method = RequestMethod.POST)
+    public String addStudent(Model model, @ModelAttribute("studentForm") StudentForm studentForm){
+
+        Student newStudent = new Student(studentForm.getId(),
+                studentForm.getName(), studentForm.getMark());
+        students.add(newStudent);
+        logger.info(" "+newStudent);
+        logger.log(Level.SEVERE,"Ex",exception);
 
         model.addAttribute("students", students);
         return "students";
